@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery Request</title>
+</head>
+<body>
+    
+    <button id="btnAdd">Додати новий</button>
+    <button id="btnViev">Переглянути список</button>
+    <input id="inpSearch" type="text"> 
+    <button id="btnSearch">Шукати</button>
+    <ul id="posts">
+    </ul>
+
+    <div id="myModal" style="display:none; position:fixed; z-index:1; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.4);">
+        <div style="background-color:#fefefe; margin:15% auto; padding:10px; border:1px solid #888; width:250px; height: 30%; border-radius: 5px;">
+            <div>
+                <p id="modalText" style="margin: 5px; font-weight: bold;" >Заповніть поля для створення нової категорії.</p>
+                <label for="inpTitle" style="margin-left: 5px;" >Title</label>
+                <input id="inpTitle" style="margin: 5px; width: 90%;" type="text">
+                <label for="inpUrlSlug" style="margin-left: 5px;" >Url Slug</label>
+                <input id="inpUrlSlug" style="margin: 5px; width: 90%;" type="text">
+            </div>
+            <button id="addCategories" style="height: 30px; color: white; background-color: green; float:left; font-size:20px; font-weight:bold; border-radius: 5px;">Add</button>
+            <button id="closeModal" style="height: 30px; color: white; background-color: grey; float:right; font-size:20px; font-weight:bold; border-radius: 5px; ">Close</button>
+
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script> // модуль коду
+        
+        (() => {
+            // const url = 'https://jsonplaceholder.typicode.com';
+            const url = 'https://lohika.itstep.click/api/categories';
+            $(document).ready(() => {
+                vievList();
+
+                // console.log('Привіт jQuery');
+            });
+
+            $('#btnSearch').click(() => {
+                const inpSearch = document.getElementById("inpSearch").value;
+                const search = `${url}/search?title=${inpSearch}`;
+                const $ul = $('#posts');
+                $ul.empty(); // - очищаємо список
+                $.get(search,
+                    (data) => {
+                        console.log("Search posts", data);
+                        data.categories.forEach((post, index) => {
+                            $ul.append(`<li><b>${index+1}</b> -- ${post.title}</li>`);
+                        });
+                    });
+            });
+
+            $('#btnViev').click(() => {
+                vievList();
+            });
+
+            $('#btnAdd').click(() => {
+                openModal();
+            });
+
+            $('#addCategories').click(() => {
+                const inpTitle = document.getElementById("inpTitle").value;
+                const inpUrlSlug= document.getElementById("inpUrlSlug").value;
+                const newPost = {
+                    title: inpTitle,
+                    urlSlug: inpUrlSlug
+                };
+                const json = JSON.stringify(newPost);
+                // $.post(`${url}/add`, json,
+                //     (data) => {
+                //         console.log("Create post", data);
+                //         viewList();
+                //     });
+                
+                $.post({
+                    url: `${url}/add`,
+                    contentType: 'application/json',
+                    data: json,
+                    success: (data) => {
+                        console.log("Create post", data);
+                        viewList();
+                    }
+                });
+            });
+
+            const vievList = () => {
+                const $ul = $('#posts');
+                $ul.empty(); // - очищаємо список
+                $.get(`${url}/list`,
+                (data) => {
+                    console.log("List users", data);
+                    data.forEach((post, index) => {
+                        $ul.append(`<li><b>${index+1}</b> -- ${post.title}</li>`);
+                    });
+                });
+            }
+
+            const myModal = document.getElementById('myModal');
+            const closeModal = document.getElementById('closeModal');
+
+            closeModal.addEventListener('click', closeModalFunc);
+
+            function openModal() {
+                myModal.style.display = 'block';
+            }
+
+            function closeModalFunc() {
+                myModal.style.display = 'none';
+        }
+        })(); // сама себе викликає данна анонімна функція
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <h1>Робота з промісами</h1>
+
+    <button class="btn btn-success" id="getUserInfo">Інформація про користувача</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    
+
+<script>
+    const userProfileUrl = "https://lohika.itstep.click/api/Account/profile";
+    axios.defaults.baseURL = "https://lohika.itstep.click";
+    axios.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
+    
+    const userToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmVmYWdvNDc3OEBla3VhbGkuY29tIiwiaW1hZ2UiOiJybHFrNXQ1ei52amUud2VicCIsInJvbGVzIjoidXNlciIsImV4cCI6MTg0NDE2OTU5Mn0.LG7uhftZsm9md-ifXjS3LP8JIXIzzp-yG25yXYX6K_E";
+    const getUserInfo = document.getElementById("getUserInfo");
+    getUserInfo.addEventListener("click", async () => {
+        try {
+            const result = await fetch(userProfileUrl, {
+            method: 'GET',
+            headers: {
+                "Authorization": `Bearer ${userToken}`}
+                });
+
+                const userInfo = await result.json();
+                console.log("fetch Result", userInfo);
+        }
+        catch {
+             
+        }
+        console.log("Get user info");
+    });
+</script>
+
+    <script>
+        //Аналог Task на C#
+        let myPromise = new Promise(function (resolve, reject) {
+            // успішне виконання
+            setTimeout(() => {   // Це Task, як у C#
+                resolve("Я успішно зловив рибку!");
+            }, 2000);
+
+            setTimeout(() => {  // Це Task, як у C#
+                reject("Упс, щось пішло не так...");
+            }, 3000);
+        });
+        console.log("Рядок 17. Перед викликом проміса");
+
+        // для того, щоб обробити результат промісу, використовується метод .then()
+        // myPromise
+        //     //then - очікує результат роботи промісу
+        //     .then(function(result) {
+        //         console.log("ТУТ БУДЕ результат",result); // "Я успішно зловив рибку!"
+        //     })
+        //     //catch - очікує помилку
+        //     .catch(function(error) {
+        //         console.log("ТУТ БУДЕ помилка", error); // "Упс, щось пішло не так..."
+        //     });
+
+        const myAJAXUra = async () => {
+            try {
+                let result = await myPromise; // очікуємо результат промісу
+                console.log("ТУТ БУДЕ результат", result); // "Я успішно зловив рибку!"
+            } catch (error) {
+                console.log("ТУТ БУДЕ помилка", error); // "Упс, щось пішло не так..."
+            }
+        }
+
+        myAJAXUra();
+
+
+    </script>
+
+
+</body>
+
+</html>

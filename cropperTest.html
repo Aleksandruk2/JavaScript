@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Cropper CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet" />
+
+
+
+    <title>Document</title>
+</head>
+<body>
+    <input type="file" id="fileInput">
+    <br>
+    <img id="image" style="max-width: 100%;" />
+    <br>
+    <button onclick="cropImage()">Обрізати</button>
+    <canvas id="canvas1" style="margin-top: 10px;"></canvas>
+    <canvas id="canvas2" style="margin-top: 10px;"></canvas>
+    <canvas id="canvas3" style="margin-top: 10px;"></canvas>
+
+
+    <script>
+        let cropper;
+        const image = document.getElementById('image');
+        const fileInput = document.getElementById('fileInput');
+        const canvas1 = document.getElementById('canvas1');
+        const canvas2 = document.getElementById('canvas2');
+        const canvas3 = document.getElementById('canvas3');
+
+        fileInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+            image.src = event.target.result;
+
+            // Очистити попередній cropper
+            if (cropper) {
+                cropper.destroy();
+            }
+
+            // Почати cropper
+            cropper = new Cropper(image, {
+                aspectRatio: 1, // Наприклад, 1:1
+                viewMode: 1
+            });
+            };
+
+            if (file) {
+            reader.readAsDataURL(file);
+            }
+        });
+
+        function cropImage() {
+            if (!cropper) return;
+            
+            const croppedCanvas = cropper.getCroppedCanvas({
+            width: 300,
+            height: 300
+            });
+            
+            const croppedCanvas2 = cropper.getCroppedCanvas({
+            width: 150,
+            height: 150
+            });
+
+            
+            const croppedCanvas3 = cropper.getCroppedCanvas({
+            width: 50,
+            height: 50
+            });
+
+            // Показати результат
+            canvas1.getContext('2d').clearRect(0, 0, canvas1.width, canvas1.height);
+            canvas1.width = 300;
+            canvas1.height = 300;
+            canvas1.getContext('2d').drawImage(croppedCanvas, 0, 0);
+
+            canvas2.getContext('2d').clearRect(0, 0, canvas2.width, canvas2.height);
+            canvas2.width = 150;
+            canvas2.height = 150;
+            canvas2.getContext('2d').drawImage(croppedCanvas2, 0, 0);
+
+            canvas3.getContext('2d').clearRect(0, 0, canvas3.width, canvas3.height);
+            canvas3.width = 50;
+            canvas3.height = 50;
+            canvas3.getContext('2d').drawImage(croppedCanvas3, 0, 0);
+        }
+    </script>
+
+    <!-- Cropper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+</body>
+</html>

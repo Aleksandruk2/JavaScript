@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Homework 1</title>
+</head>
+<body>
+    <script>
+        const task1 = () => {
+            let name = prompt("Введіть ім'я");
+            alert(name);
+        }
+        // task1();
+
+        const task2 = () => {
+            const curentYear = 2025;
+            let year = prompt("Введіть рік народження:");
+            alert(`Вам ${curentYear - year} років`);
+        }
+        // task2();
+
+        const task3 = () => {
+            let a = prompt("Введіть довжину сторони квадрата:");
+            alert(`Периметр квадрати = 
+            ${Number(a) + Number(a) + Number(a) + Number(a)}`);
+        }
+        // task3();
+
+        const task4 = () => {
+            let r = prompt("Введіть радіус кола:");
+            alert(`Площа круга = ${(3.14 * r) * 2 }`);
+        }
+        // task4();
+
+        const Task5 = () => {
+            let distance = prompt("Ввеідть відстань в км:");
+            let time = prompt("Введіть час за який ви хочите дістатись місця призначення в годинах:");
+            alert(`Швидкість з якою потрібно рухатись ${distance / time}км на годину.`);
+        }
+        // Task5();
+
+        const Task6 = () => {
+            const euros = 0.84;
+            let dollars = prompt("Введіть суму для конвертації в доларах:");
+            alert(`EUR =  ${dollars * euros}`);
+        }
+        // Task6();
+
+        const Task7 = () => {
+            const file = 820;
+            let sizeGb = prompt("Введіть розмір у гіга байтах:")
+            alert(`У флешку розміром ${sizeGb} Gb поміститься ${~~((sizeGb * 1024) / file)} файлів розміром ${file} Mb.`);
+        }
+        // Task7();
+
+        const Task8 = () => {
+            let chocolatePrice = prompt("Введіть ціну шоколадки в грн:"); 
+            let money = prompt("Введіть кількість грошей в гаманці:");
+            alert(`Ви можете купити ${~~(money / chocolatePrice)} шоколадок. У вас залишиться ${money % chocolatePrice} грн.`);
+        }
+        // Task8();
+
+        const Task9 = () => {
+            let num = prompt("Введіть тризначне число: ");
+            if(num >= 100 && num <= 999)
+            {
+                let last = num % 10;
+                let middle = ~~((num % 100) / 10);
+                let first = ~~(num / 100);  
+                alert(`число-перевертень ${last * 100 + middle * 10 + first}.`);
+            }
+            else{
+                alert("Ввведено не ТРИЗНАЧНЕ число.");
+            }
+        }
+        // Task9();
+
+        const Task10 = () => {
+            let num = prompt("Введіть число:");
+            alert(num % 2 == 0 ? "Парне" : "Не парне");
+        }
+        Task10();
+    </script>
+</body>
+</html>

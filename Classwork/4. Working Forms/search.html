@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/Classwork/4. Working Forms/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <title>Пошукова форма</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Знайт категорію</h1>
+        
+        <form class="col-md-6 offset-md-3 needs_validation" novalidate>
+          <div class="mb-3">
+            <input placeholder="Id" type="number" class="form-control mb-1" id="id" name="id" required>
+            <div class="invalid-feedback">Вкажіть id</div>
+          </div>
+
+          <div class="mb-3">
+            <input placeholder="Title" type="text" class="form-control mb-1" id="title" name="title" required>
+            <div class="invalid-feedback">Вкажіть Title</div>
+          </div>
+
+          <div class="mb-3">
+            <input placeholder="Priority" type="number" class="form-control mb-1" id="priority" name="priority"required>
+            <div class="invalid-feedback">Вкажіть Priority</div>
+          </div>
+
+          <div class="mb-3">
+            <input placeholder="Page" type="number" class="form-control" id="page" name="page" required accept="image/*">
+            <div class="invalid-feedback">Вкажіть Page</div>
+          </div>
+          
+          <button type="search" class="btn btn-primary">Search</button>
+        </form>
+
+    </div>
+    
+
+    <script src="/Classwork/4. Working Forms/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/Classwork/4. Working Forms/node_modules/axios/dist/axios.min.js"></script>
+
+    <script>
+        (() => {
+            forms.forEach(form => {
+                console.log("foreach forms",form);
+
+                form.addEventListener("submit", e => {
+                    if(!form.checkValidity()) {
+                        e.preventDefault();
+                    }
+                    else {
+                        //Перетворюємо дані в json
+                        const formData = new FormData(form);
+                        const model = Object.fromEntries(formData.entries());
+                        model.image = imageBase64;
+                        // console.log("Server send", model);
+                        axios.post("https://lohika.itstep.click/api/categories/add",model)
+                        .then(result => {
+                            console.log("Успішно зроблено",result);
+                        })
+                        .catch(error => {
+                            console.log("Error server", error);
+                        });
+                        e.preventDefault();
+                    }
+                    // else
+                    //     alert("From Submit");
+                    form.classList.add("was-validated");
+                });
+            });
+
+            // Array.from(forms).forEach(form => {
+            //     console.log("Form item", form);
+            // });
+
+        })();
+
+        (() => {
+            forms.forEach(form => {
+                
+            })
+        })();
+    </script>
+</body>
+</html>

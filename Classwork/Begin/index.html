@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>JavaScript</title>
+</head>
+<body>
+    <script>
+        var stringNumber = prompt("Введіть число");
+        var a = Number(stringNumber);
+        a%2==0 ? alert("Число парне") : alert("Число не парне");
+    </script>
+
+
+    <!-- <script>
+        mytt=[3,5];
+        mytt2 = {name:"Vova"};
+        salo = null
+        myStep = undefined;
+        mySymb = Symbol('12');
+        myBigInt = BigInt(2);
+        str = "my string";
+        a = 5;
+        e = false;
+        console.log("Тип даних ",mytt, typeof(mytt));
+        console.log("Тип даних ",mytt2, typeof(mytt2));
+        console.log("Тип даних ",salo, typeof(salo));
+        console.log("Тип даних ",myStep, typeof(myStep));
+        console.log("Тип даних ",mySymb, typeof(mySymb));
+        console.log("Тип даних ",myBigInt, typeof(myBigInt));
+        console.log("Тип даних ",str, typeof(str));
+        console.log("Тип даних ",a, typeof(a));
+        console.log("Тип даних ",e, typeof(e));
+
+        //+, -, *, /
+
+        a = 23;
+        //Іде перевірка типу даних. (===)
+        if(a === '23'){
+            console.log("a == '23'");
+        }
+        
+        //Оператори умови ті самі, що у C#
+        //if, else, switch, or, while, do while
+        //break, continue,
+        //foreech - немає foreech(var item in list)
+        
+
+
+    </script>
+    <h1>Розробка веб сайту</h1>
+
+
+    <button onclick="myTest(this)">Привіт Козак</button>
+    <script>
+        var counter = 1;
+        //Стрілочна функція
+        const myTest = (e) => {
+            let text = e.innerHTML;
+            e.innerHTML = counter++;
+            console.log("My test виклик", text);
+        }
+
+        myTest();
+
+        function myFunc(n)
+        {
+            console.log("n = ", n);
+            return n+1;
+        }
+
+        let result = myFunc(2);
+        console.log("Result = ",result);
+    </script>
+
+    <script>
+        var n = 10;
+        for(let i = 0; i<n; i++){
+            document.write(`<h2>${i}</h2>`)
+        }   
+    </script> -->
+
+    <script>
+        //task1
+
+        // var num = prompt("Вкадіть число");
+        // alert(num*num);
+
+        //task2
+
+        // var num1 = prompt("Вкажіть число 1:");
+        // var num2 = prompt("Вкажіть число 2:");
+        // sum = Number(num1)+Number(num2);
+        // a = 4;
+        // alert(sum/2);
+        // console.log(sum, typeof(sum));
+
+        //task3 - повторення завдання 1.
+
+        //task4
+
+        const task4 = () => {
+            let num = prompt("Вкадіть число");
+            alert(num*0.621371);
+        }
+        // task4();
+
+        //task5
+
+        const task5 = () => {
+            let num1 = prompt("Вкажіть число 1:");
+            let num2 = prompt("Вкажіть число 2:");  
+            sum1 = Number(num1)+Number(num2);
+            
+            sum2 = Number(num1)-Number(num2);
+            
+            sum3 = Number(num1)*Number(num2);
+            
+            sum4 = Number(num1)/Number(num2);
+
+            alert(`${num1} + ${num2} = ${sum1}\n
+            ${num1} - ${num2} = ${sum2}\n
+            ${num1} * ${num2} = ${sum3}\n
+            ${num1} / ${num2} = ${sum4}`);
+        }
+        // task5();
+    </script>
+</body>
+</html>

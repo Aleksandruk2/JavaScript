@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Регістрація</title>
+    <link rel="stylesheet" href="/Classwork/Add style and partial/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Classwork/Add style and partial/css/style.css">
+    <link rel="stylesheet" href="/Classwork/Add style and partial/node_modules/cropperjs/dist/cropper.min.css">
+    <script src="/Classwork/Add style and partial/js/site.js"></script>
+</head>
+<body>
+    <script>loadDOM("/Classwork/Add style and partial/_header.html")</script>
+
+     <h1 class="text-center mt-2">Регістрація</h1>
+
+    <div class="container">
+        <div class="row">
+            <form class="col-md-6 offset-md-3">
+                <div class="mb-3">
+                  <label for="lastName" class="form-label">Прізвище</label>
+                  <input type="text" class="form-control" id="lastName" name="lastName">
+                </div>
+
+                <div class="mb-3">
+                  <label for="firstName" class="form-label">Ім'я</label>
+                  <input type="text" class="form-control" id="firstName" name="lastName">
+                </div>
+                
+                <div class="mb-3">
+                  <label for="formFile" class="form-label">Оберіть фото</label>
+                  <input class="form-control" type="file" id="formFile">
+                </div>
+                
+                <button id="btnViewModal" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#crop-image-modal">
+                    Обрати фото
+                </button>                
+
+                <button id="btnRegister" onclick="OnSubmitForm" type="submit" class="btn btn-primary">Реєстрація</button>
+              </form>
+        </div>
+    </div>
+
+    <script>
+        let listUser = [];
+
+        const OnSubmitForm = () => {
+            event.preventDefault();
+
+            const lastName = document.getElementById("lastName");
+            const firstName = document.getElementById("firstName");
+            const image = document.getElementById("imageModal");
+            console.log("Lastname", lastName);
+            console.log("FirstName", firstName);
+            console.log("Image", image);
+            console.log("On click button form");
+
+            listUser.push(
+                {
+                    lastName: lastName.value,
+                    firstName: firstName.value,
+                    image: image.src
+                }  
+            );
+            // Аналог Dictionary
+            // localStorage.users - "Салют козаки";
+            localStorage.users = JSON.stringify(listUser);
+            console.log("listUser",listUser);
+            console.log("List users json", JSON.stringify(listUser));
+        }
+
+        window.onload = () => {
+            var usersJson = localStorage.users ?? "[]";
+            listUsers = JSON.parse(usersJson);
+            console.log("onload");
+            const btnRegister = document.getElementById("btnRegister");
+            btnRegister.onclick = OnSubmitForm;
+        }
+    </script>
+     
+    <script>loadDOM("/Classwork/Add style and partial/partial/modal_photo.html")</script>
+    <script src="/Classwork/Add style and partial/js/bootstrap.bundle.min.js"></script>
+    <script src="/Classwork/Add style and partial/node_modules/cropperjs/dist/cropper.min.js"></script>
+
+    <script>
+
+        let cropper; //Обєкт cropper
+        const modal = document.getElementById('cropperModal');
+
+        const formFile = document.getElementById("formFile");
+
+        let imageModal = document.getElementById("imageModal");
+
+        const cropImageModal = document.getElementById('crop-image-modal');
+        const myModalBootstrap = new bootstrap.Modal(cropImageModal, {})
+
+        const selectEventImage = (event) => {
+            const files = event.target.files;
+            if (files && files.length) {
+                const file = files[0];
+                console.log("type = ", file.type);
+                //Перевіряємо чи ми обрали фото
+                if (/^image\/\w+/.test(file.type)) {
+
+                    if(cropper)
+                        cropper.destroy(); //якщо інсує уже створений
+
+                    const urlImage = URL.createObjectURL(file);
+                    imageModal.src=urlImage;
+
+                    myModalBootstrap.show();
+
+                }
+                else {
+                    alert("Оберіть файл зображення");
+                }
+            }
+            else {
+                alert("Оберіть фото");
+            }
+        }
+        formFile.addEventListener("change", (event) => {
+            selectEventImage(event);
+        });
+
+        cropImageModal.addEventListener('shown.bs.modal', function () {
+            console.log("cropper run");
+            cropper = new Cropper(imageModal, {
+                aspectRatio: 1,
+                viewMode: 1
+            });
+        });
+
+        console.log("formFile", formFile);
+        
+    </script>
+
+    <script>
+        document.getElementById("btnCut").addEventListener("click", function () {
+            console.log("btnCut",btnCut);
+            
+            canvas = cropper.getCroppedCanvas({
+                width: 50,
+                height: 50
+                });
+
+            croppedURL = canvas.toDataURL();
+            console.log("croppedURD -", croppedURL);
+
+            imageModal.src = croppedURL;
+
+            const modalElement = document.getElementById('crop-image-modal');
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            modalInstance.hide();
+        });
+    </script>
+</body>
+</html>

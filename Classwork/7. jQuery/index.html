@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery</title>
+</head>
+<body>
+    <h1>Привіт jQuery</h1>
+
+    <span id="myspan"></span>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="bodyUsers">
+            <tr>
+                <td>0</td>
+                <td>Перший користувач</td>
+                <td>first@gmail.com</td>
+                <td>
+                    <button id=user0>Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <div id="myModal" style="display:none; position:fixed; z-index:1; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.4);">
+        <div style="background-color:#fefefe; margin:15% auto; padding:20px; border:1px solid #888; width:80%; border-radius: 5px;">
+            <button id="closeModal" style="height: 30px; color: white; background-color: green; float:right; font-size:20px; font-weight:bold; border-radius: 5px;">Close</button>
+            <button id="deleteUser" style="height: 30px; color: white; background-color: red; float:right; font-size:20px; font-weight:bold; border-radius: 5px; margin-right: 5px;">Delete</button>
+            <p id="modalText">Це текст модального вікна.</p>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+        // window.onload = function() {
+        //     console.log("window on load JavaScript");
+        //     // document.getElementById("myspan").innerHTML = "Привіт JS";
+        // }
+
+        // // 2015 р -
+        // window.addEventListener("load", () => {
+        //     console.log("Window on load Window addEventListener");
+        // });
+
+        const users = [
+            {
+                id: 1,
+                name: "Іван",
+                email: "ivan@gmail.com"
+            },
+            {
+                id: 2,
+                name: "Оксана",
+                email: "Oksana@gmail.com"
+            }
+        ];
+
+        // Обробка події onload в JavaScript Window
+        // у jQuery - підбираються найкращий спосіб на момент виходу jQuery
+       
+        // document.getElementById("user0").addEventListener("click", () => {
+        //    console.log("Hello user0");
+        //});
+
+        // $("#user0").on("click", () => {
+        //     console.log("jQuery user 0");
+        // });
+
+        //"[id=]"
+        // Пошук у елементів DOM дерева id = bodyUsers,
+        //Якщо в даному елементі з'явиться елеммент із id = user*
+        //Тобто атрибут([]) id = user а далі будь-які символи.
+        const modalText = $("#modalText");
+        $("#bodyUsers").on("click","[id^=user]",function() {
+            const id = $(this).attr("id");
+
+            openModal();
+            modalText.html(`Name: ${users[1].name}`);
+
+            //console.log("$(this)", $(this));
+            console.log("jQuery user 1", id);
+        });
+        
+        const myModal = document.getElementById('myModal');
+        const closeModal = document.getElementById('closeModal');
+
+        closeModal.addEventListener('click', closeModalFunc);
+
+        function openModal() {
+            myModal.style.display = 'block';
+        }
+
+        function closeModalFunc() {
+            myModal.style.display = 'none';
+        }
+
+
+        // Додатково: закриття модального вікна при кліку поза ним
+        window.addEventListener('click', function(event) {
+            if (event.target === myModal) {
+                myModal.style.display = 'none';
+            }
+        });
+
+        // $("#bodyUsers").on("click","#user2",function() {
+        //     const id = $(this).attr("id");
+        //     //console.log("$(this)", $(this));
+        //     console.log("jQuery user 2");
+        // });
+
+        $(function() {
+            console.log("on load jQuery");
+            $("#myspan").html("Привіт jQuery");
+
+            const bodyUsers = $("#bodyUsers");
+            
+
+            users.forEach( (user, index) => {
+                // console.log("Hello", user);
+                var html = `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>
+                            <button id=user${index+1}>Delete</button>
+                        </td>
+                    </tr>
+                `;
+                bodyUsers.append(html);
+            });
+        });
+    </script>
+</body>
+</html>

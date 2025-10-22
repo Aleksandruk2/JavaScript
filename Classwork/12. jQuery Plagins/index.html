@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery Plugins Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="node_modules/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>jQuery Plugins Project</h1>
+    <p>Start adding your jQuery plugins and demos here.</p>
+
+    <select name="state">
+        <option value="AL">Іванка</option>
+        <option value="SW">Світлана</option>
+        <option value="MA">Марічка</option>
+        <option value="OK">Оксана</option>
+        <option value="OL">Ольга</option>
+        <option value="KA">Катерина</option>
+        <option value="LA">Лариса</option>
+        <option value="UA">Юля</option>
+    </select>
+        
+    <label for="my-date">Select a Date:</label>
+    <input type="text" id="my-date" name="selectedDate">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="node_modules/select2/dist/js/select2.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="datepicker-uk.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            console.log("Hello, jQuery Plagins Project!");
+            $('select').select2({
+                placeholder: "Введіть ім'я",
+                allowClear: true,
+                width: "200px",
+                multiple: true
+            });
+        });
+    </script>
+
+    <script>
+        $(() => {
+            $("#my-date").datepicker($.datepicker.regional["uk"] );
+        });
+    </script>
+</body>
+</html>

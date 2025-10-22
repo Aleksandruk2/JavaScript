@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Головна сторінка</title>
+    <link rel="stylesheet" href="/Classwork/Add style and partial/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Classwork/Add style and partial/css/style.css">
+    <script src="/Classwork/Add style and partial/js/site.js"></script>
+</head>
+<body>
+    <script>loadDOM("/Classwork/Add style and partial/_header.html")</script>
+
+    <h1 class="text-center mt-2">Користувачі</h1>
+
+    <div class="container">
+        <button id="buttonDeleteLast" class="btn btn-danger">Видалити останій</button>
+
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Photo</th>
+              </tr>
+            </thead>
+            <tbody id="listUsers">
+            </tbody>
+          </table>
+    </div>
+
+
+    <script>
+        window.onload =() => {
+            var usersJson = localStorage.users;
+            console.log("UsersJson", usersJson);
+            var list = JSON.parse(usersJson);
+
+            let content = "";
+            for(let i = 0; i < list.length; i++){
+                content += 
+                `
+                    <tr >
+                        <th scope="row">${i+1}</th>
+                        <td>${list[i].lastName}</td>
+                        <td>${list[i].firstName}</td>
+                        <td><img src="${list[i].image}" class="rounded-circle" height="50"></td>
+                    </tr>
+                `;
+            }
+
+            listUsers = document.getElementById("listUsers");
+
+            // Автоматично знайшов елемент по ID
+            listUsers.innerHTML = content;
+
+            console.log("list",list);
+
+            // Видаляю останій із списку
+            buttonDeleteLast.onclick = () =>{
+                list.pop(); // Видалив останій із списку
+                localStorage.users = JSON.stringify(list);
+                location.reload(); // Перезагружаю сторінку
+            }
+        }
+
+
+        // innerHTML - Можна змінювати вміст компонента повністю 
+    </script>
+
+    <script src="/Classwork/Add style and partial/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

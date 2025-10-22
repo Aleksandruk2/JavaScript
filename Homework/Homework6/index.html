@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/site.js"></script>
+    <title>Homework6 From-localStorage</title>
+</head>
+<body>
+    <script>loadDOM("header.html")</script>
+
+    <div class="container border-2 border rounded mt-3 pt-2">
+        <form id="registerForm"  novalidate>
+            <div id="modalContentAM" class="modal-body">
+                <div class="mb-3">
+                    <label for="firstName" class="form-label text-white fw-bold">Введіть ім'я</label>
+                    <input id="firstName" class="form-control" type="text" placeholder="Введіть ім'я"  required>
+                    <div class="invalid-feedback fw-bold">
+                        Будь ласка, введіть  ім'я продукта
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="lastName" class="form-label text-white fw-bold">Введіть прізвище</label>
+                    <input id="lastName" class=" form-control" type="text" placeholder="Введіть прізвище"  required>
+                    <div class="invalid-feedback fw-bold">
+                        Будь ласка, введіть прізвище
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label text-white fw-bold">Введіть пароль</label>
+                    <input id="password" class=" form-control" type="password" minlength="8" placeholder="Введіть пароль"  required>
+                    <div class="invalid-feedback fw-bold">
+                        Будь ласка, введіть пароль
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label text-white fw-bold">Підтвердіть пароль</label>
+                    <input id="confirmPassword" class=" form-control" type="password" placeholder="Підтвердіть пароль" required>
+                    <div id="invalid-feedback-confirmPassword" class="invalid-feedback fw-bold">
+                        Будь ласка, підтвердіть пароль
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="photo" class="form-label text-white fw-bold">Додати фото</label>
+                    <input id="photo" class="form-control" type="file" placeholder="Додати файл" accept="image/*" required>
+                    <div class="invalid-feedback fw-bold">
+                        Будь ласка, оберіть фото
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-warning text-white fw-bold mb-2" id="confirmBtn">Регістрація</button>
+            
+            </div>
+        </form>
+    </div>
+
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const form = document.getElementById('registerForm');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const photo = document.getElementById('confirmPassword');
+
+        form.addEventListener('submit', function (event) {
+            
+            event.preventDefault();
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+                return;
+            }
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const passwordValue = document.getElementById('password').value;
+            const confirmPasswordValue = document.getElementById('confirmPassword').value;
+
+            let isValid = true;
+
+            if (password.value.length < 8) {
+                password.classList.add('is-invalid');
+                isValid = false;
+                alert("< 8");
+            } else {
+                password.classList.add('is-valid');
+            }
+
+            if (password.value !== confirmPassword.value || confirmPassword.value === "") {
+                confirmPassword.classList.add('is-invalid');
+                isValid = false;
+                alert("!==");
+            } else {
+                confirmPassword.classList.add('is-valid');
+            }
+
+            if (isValid) {
+                const limit = 5 * 1024 * 1024; //5 МБ
+                const file = document.getElementById('photo').files[0];
+                if (file.size <= limit) {
+                    form.reset();
+                    password.classList.remove('is-invalid','is-valid');
+                    confirmPassword.classList.remove('is-invalid','is-valid');
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const result = e.target.result;
+
+                        var sendData = {
+                                firstName,
+                                lastName,
+                                password: passwordValue,
+                                confirmPassword: confirmPasswordValue,
+                                photo: result
+                            };
+                        localStorage.setItem("user", JSON.stringify(sendData));
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    photo.classList.add('is-invalid');
+                    alert("Розмір фото перевищує ліміт (5MB).");
+                }
+
+            }
+        });
+
+    </script>
+</body>
+</html>

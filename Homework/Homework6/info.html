@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/site.js"></script>
+    <title>Homework6 From-localStorage</title>
+</head>
+<body>
+    <script>loadDOM("header.html")</script>
+
+    <div class="container d-flex justify-content-center">
+        <div id="userBox"></div>
+    </div>
+
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const user = JSON.parse(localStorage.getItem("user"));
+        const userBox = document.getElementById("userBox");
+        
+        if (user !== null) {
+            const h2 = document.createElement("h2");
+            h2.className = "text-center text-white"
+            h2.textContent = `${user.firstName} ${user.lastName}`;
+
+            const img = document.createElement("img");
+            img.src = user.photo;
+            img.width = 400;
+            img.className = "shadow";
+
+            userBox.appendChild(h2);
+            userBox.appendChild(img);
+            userBox.className = "border-top border-white border-bottom m-2 p-2";
+        }
+
+        
+
+    </script>
+</body>
+</html>

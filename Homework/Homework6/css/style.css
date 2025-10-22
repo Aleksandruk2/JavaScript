@@ -1,0 +1,10 @@
+:root {
+    --my-header-h: 3.5rem;
+    --my-body-bg: #28708d;
+}
+
+
+body {
+    padding-top: var(--my-header-h);
+    background: var(--my-body-bg);
+}

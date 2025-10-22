@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+    <title>Canvas</title>
+</head>
+<body>
+    
+    <div class="container bg-danger pb-2 shadow text-white" style="min-width: 530px;">
+        <h1 class="text-center mb-2 border-bottom border-1 border-white">PAINT</h1>
+            <div class="d-flex pb-2">
+                <div class="d-flex m-1 align-items-center border-bottom border-1 border-white">
+                    <input id="squareInput" class="form-check-input" name="figure" type="radio"></input>
+                    <div class="container">
+                        <canvas id="square" width="90" height="90"></canvas>
+                    </div>
+                </div>
+                <div class="d-flex m-1 align-items-center border-bottom border-1 border-white">
+                    <input id="circleInput" class="form-check-input" name="figure" type="radio"></input>
+                    <div class="container">
+                        <canvas id="circle" width="90" height="90"></canvas>
+                    </div>
+                </div>
+                <div class="d-flex m-1 align-items-center border-bottom border-1 border-white">
+                    <input id="diamondInput" class="form-check-input" name="figure" type="radio"></input>
+                    <div class="container">
+                        <canvas id="diamond" width="90" height="90"></canvas>
+                    </div>
+                </div>
+                <div class="d-flex m-1 align-items-center border-bottom border-1 border-white">
+                    <input id="triangleInput" class="form-check-input" name="figure" type="radio"></input>
+                    <div class="container">
+                        <canvas id="triangle" width="90" height="90"></canvas>
+                    </div>
+                </div>
+                <div id="colors" class="border rounded-1 m-2 p-1" >
+                    <button id="colorRed" class="border rounded-1 p-2  p-md-2 p-lg-3 m-1" style="background-color: red;"></button>
+                    <button id="colorBlue" class="border rounded-1 p-2  p-md-2 p-lg-3 m-1" style="background-color: blue;"></button>
+                    <button id="colorYellow" class="border rounded-1 p-2  p-md-2 p-lg-3 m-1" style="background-color: yellow;"></button>
+                    
+                    <button id="colorGreen" class="border rounded-1 p-2  p-md-2 p-lg-3 m-1" style="background-color: green;"></button>
+                    <button id="colorViolet" class="border rounded-1 p-2  p-md-2 p-lg-3 m-1" style="background-color: violet;"></button>
+                    <button id="colorPink" class="border rounded-1 p-2  p-md-2 p-lg-3 m-1" style="background-color: pink;"></button>
+                    
+                    <button id="colorGrey" class="border rounded-1 p-2  p-md-2 p-lg-3 m-1" style="background-color: grey;"></button>
+                    <button id="colorBlack" class="border rounded-1 p-2  p-md-2 p-lg-3 m-1" style="background-color: black;"></button>
+                    <button id="colorWhite" class="border rounded-1 p-2  p-md-2 p-lg-3 m-1" style="background-color: white;"></button>
+                </div>
+            </div>
+
+            <div class="d-flex">
+                <div class="" style="width: 130px;">
+                    <label for="slider" class="text-white me-2" id="sliderLabel"></label>
+                    <input type="range" name="slider" id="slider" min="1" max="100" value="30">
+                </div>
+                <div id="divSliderState" class="ms-2" style="width: 140px; display: none;">
+                    <label for="sliderState" class="text-white me-2" id="sliderStateLabel"></label>
+                    <input type="range" name="sliderState" id="sliderState" min="1" max="1" value="1" style="width: 75px;">
+                </div>
+                <div id="seletedColor" class="ms-4 mb-2 border rounded-3 w-100" style="background-color: blue; height: 20px;"></div>
+            </div>
+
+            <div id="boxForCanvas" class="border rounded-3 mb-2 p-1">
+                <canvas id="mainCanvas" height="800" class="bg-white border rounded-3"></canvas>
+            </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        //Блок змінних
+        const square = document.getElementById("square");
+        const circle = document.getElementById("circle");
+        const diamond = document.getElementById("diamond");
+        const triangle = document.getElementById("triangle");
+        const boxForCanvas = document.getElementById("boxForCanvas");
+        const mainCanvas = document.getElementById("mainCanvas");
+        const btnColorRed = document.getElementById("colorRed");
+        const btnColorBlue = document.getElementById("colorBlue");
+        const btnColorYellow = document.getElementById("colorYellow");
+        const btnColorGreen = document.getElementById("colorGreen");
+        const btnColorViolet = document.getElementById("colorViolet");
+        const btnColorPink = document.getElementById("colorPink");
+        const btnColorGrey = document.getElementById("colorGrey");
+        const btnColorBlack = document.getElementById("colorBlack");
+        const btnColorWhite = document.getElementById("colorWhite");
+        const seletedColor = document.getElementById("seletedColor");
+        const squareInput = document.getElementById("squareInput"); 
+        const circleInput = document.getElementById("circleInput"); 
+        const diamondInput = document.getElementById("diamondInput"); 
+        const triangleInput = document.getElementById("triangleInput");
+        const slider = document.getElementById("slider");
+        const sliderLabel = document.getElementById("sliderLabel");
+        const sliderState = document.getElementById("sliderState");
+        const sliderStateLabel = document.getElementById("sliderStateLabel");
+        const divSliderState = document.getElementById("divSliderState");
+        var drawFigureTriangle = null;
+        var curentFigure = null;
+        var lastStateTriangle = 1;
+
+        const maxCanvasSize = 90;
+        let canvasSize = maxCanvasSize;
+       
+
+        //Блок функцій
+
+        // Малює квадрат
+        const drawFigureSquare = (x, y, size, color, canvas) => {
+            let draw = canvas.getContext('2d');
+            draw.beginPath();
+            draw.fillStyle = color;
+            draw.fillRect(x - size / 2, y - size / 2, size, size);
+            draw.closePath();
+        }
+
+        // Малює коло
+        const drawFigureCircle = (x, y, size, color, canvas) => {
+            let draw = canvas.getContext('2d');
+            draw.beginPath();
+            draw.arc(x, y, size / 2, 0, 2 * Math.PI);
+            draw.fillStyle = color;
+            draw.fill();
+            draw.closePath();
+        }
+
+        // Малює ромб
+        const drawFigureDiamond = (x, y, size, color, canvas) => {
+            let draw = canvas.getContext('2d');
+            draw.beginPath();
+            draw.moveTo(x, y - size / 2);
+            draw.lineTo(x + size / 2, y);
+            draw.lineTo(x, size / 2 + y);
+            draw.lineTo(x - size / 2, y);
+            draw.fillStyle = color;
+            draw.closePath();
+            draw.fill();
+        }
+
+        // Малює трикутник
+        const drawFigureTriangle1 = (x, y, size, color, canvas) => {
+            let draw = canvas.getContext('2d');
+            draw.beginPath();
+            draw.moveTo(x - size / 2, y - size / 2);      
+            draw.lineTo(x + size / 2, y + size / 2); 
+            draw.lineTo(x - size / 2, y + size / 2);
+            draw.closePath();
+            draw.fillStyle = color;
+            draw.fill();
+        }
+        
+        const drawFigureTriangle2 = (x, y, size, color, canvas) => {
+            let draw = canvas.getContext('2d');
+            draw.beginPath();
+            draw.moveTo(x, y - size / 2);      
+            draw.lineTo(x + size / 2, y + size / 2); 
+            draw.lineTo(x - size / 2, y + size / 2);
+            draw.closePath();
+            draw.fillStyle = color;
+            draw.fill();
+        }
+
+        const drawFigureTriangle3 = (x, y, size, color, canvas) => {
+            let draw = canvas.getContext('2d');
+            draw.beginPath();
+            draw.moveTo(x + size / 2, y - size / 2);      
+            draw.lineTo(x + size / 2, y + size / 2); 
+            draw.lineTo(x - size / 2, y + size / 2);
+            draw.closePath();
+            draw.fillStyle = color;
+            draw.fill();
+        }
+
+        // малює фігури із задоною величеною та кольором
+        const drawFigures = () => {
+            clearFigures();
+
+            drawFigureSquare(45, 45, canvasSize, 'white', square);
+
+            drawFigureCircle(45, 45, canvasSize, 'white', circle);
+
+            drawFigureDiamond(45, 45, canvasSize, 'white', diamond);
+
+            drawFigureTriangle(45, 45, canvasSize, 'white', triangle);
+        }
+
+        // очищує фігури
+        const clearFigures = () => {
+            square.getContext('2d').clearRect(0,0,canvasSize,canvasSize);
+            circle.getContext('2d').clearRect(0,0,canvasSize,canvasSize);
+            diamond.getContext('2d').clearRect(0,0,canvasSize,canvasSize);
+            triangle.getContext('2d').clearRect(0,0,canvasSize,canvasSize);
+        }
+
+        //Змінює розмір mainCanvas відносно батьківського div 
+        const chengeSizeMainCanvas = () => {
+            mainCanvas.width = boxForCanvas.clientWidth - 10; // - 10 тому, що div має падінг
+        }
+
+        // змінює розмір фігури на новий і повертає true, якщо шірина вікна менша зазначеного числа
+        const chengeSizeIf = (width, newSize) => {
+            if(window.innerWidth < width) {
+                canvasSize = newSize;
+                clearFigures();
+                setFiguresSize(canvasSize,canvasSize);
+                drawFigures();
+            }
+            else {
+                canvasSize = maxCanvasSize;
+                clearFigures();
+                setFiguresSize(canvasSize,canvasSize);
+                drawFigures();
+            }
+            chengeSizeMainCanvas();
+            return true;
+        }
+
+        // Установлює нові значення для фігур
+        const setFiguresSize = (width, height) => {
+            square.width = width;
+            square.height = height;
+            circle.width = width;
+            circle.height = height;
+            diamond.width = width;
+            diamond.height = height;
+            triangle.width = width;
+            triangle.height = height;
+        }
+
+        // Змінює значення label 
+        const setSlider = () => { sliderLabel.innerText = 'Величина: ' + slider.value; }
+        
+        const setSliderState = () => { sliderStateLabel.innerText = 'Варіація: ' + sliderState.value; }
+
+        //Виконання коду
+        drawFigureTriangle = drawFigureTriangle1;
+        window.addEventListener("resize",() => {chengeSizeIf(768,50)});
+        window.addEventListener("load", () => {
+            chengeSizeIf(768,50);
+            drawFigures();
+            setSlider();
+            setSliderState();
+        });
+
+        // Змінює задній фон selectedColor
+        btnColorRed.addEventListener("click", () => {seletedColor.style.backgroundColor = btnColorRed.style.backgroundColor});
+        btnColorBlue.addEventListener("click", () => {seletedColor.style.backgroundColor = btnColorBlue.style.backgroundColor});
+        btnColorYellow.addEventListener("click", () => {seletedColor.style.backgroundColor = btnColorYellow.style.backgroundColor});
+        btnColorGreen.addEventListener("click", () => {seletedColor.style.backgroundColor = btnColorGreen.style.backgroundColor});
+        btnColorViolet.addEventListener("click", () => {seletedColor.style.backgroundColor = btnColorViolet.style.backgroundColor});
+        btnColorPink.addEventListener("click", () => {seletedColor.style.backgroundColor = btnColorPink.style.backgroundColor});
+        btnColorGrey.addEventListener("click", () => {seletedColor.style.backgroundColor = btnColorGrey.style.backgroundColor});
+        btnColorBlack.addEventListener("click", () => {seletedColor.style.backgroundColor = btnColorBlack.style.backgroundColor});
+        btnColorWhite.addEventListener("click", () => {seletedColor.style.backgroundColor = btnColorWhite.style.backgroundColor});
+
+        // Установлює функцію для curentFigure яка малює вибрану фігуру
+        squareInput.addEventListener("click", () => {
+            curentFigure = ''; curentFigure = drawFigureSquare;
+            divSliderState.style.display = 'none';
+        });
+        circleInput.addEventListener("click", () => {
+            curentFigure = ''; curentFigure = drawFigureCircle;
+            divSliderState.style.display = 'none';
+        });
+        diamondInput.addEventListener("click", () => {
+            curentFigure = ''; curentFigure = drawFigureDiamond;
+            divSliderState.style.display = 'none';
+        });
+        triangleInput.addEventListener("click", () => {
+            curentFigure = ''; curentFigure = drawFigureTriangle;
+            sliderState.max = 3;
+            sliderState.value = lastStateTriangle;
+            sliderStateLabel.innerText = 'Варіація: ' + sliderState.value;
+            divSliderState.style.display = 'block';
+        });
+
+        // Малює вибрану фігуру вибраного кольору на полі
+        mainCanvas.addEventListener("click",(e) => {
+            try {
+                const rect = mainCanvas.getBoundingClientRect();
+                const x = e.clientX - rect.x;
+                const y = e.clientY - rect.y;
+
+                curentFigure(x, y, slider.value, seletedColor.style.backgroundColor, mainCanvas);
+                console.log(curentFigure);
+            }
+            catch (error) {
+                splitedError = String(error).split(" ");
+                if(splitedError[1] === "curentFigure")
+                {
+                    alert("Виберіть фігуру щоб малювати.");
+                }
+            }
+            
+        });
+
+        slider.addEventListener("input", () => {
+            sliderLabel.innerText = 'Величина: ' + slider.value;
+        });
+
+        sliderState.addEventListener("input", () => {
+            sliderStateLabel.innerText = 'Варіація: ' + sliderState.value;
+            if(sliderState.value == 1) {
+                drawFigureTriangle = drawFigureTriangle1;
+                lastStateTriangle = 1;
+            }
+            if(sliderState.value == 2) {
+                drawFigureTriangle = drawFigureTriangle2;
+                lastStateTriangle = 2
+            }
+            if(sliderState.value == 3) {
+                drawFigureTriangle = drawFigureTriangle3;
+                lastStateTriangle = 3;
+            }
+            curentFigure = '';
+            curentFigure = drawFigureTriangle;
+            drawFigures();
+        });
+
+        
+        
+    </script>
+</body>
+</html>

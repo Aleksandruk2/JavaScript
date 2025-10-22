@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas</title>
+
+    <style>
+        #myCanvas {
+            border:  2px solid black;
+            
+            /* width: 1000px;
+            height: 800px; */
+            margin: 20px;
+            background-image: url(images/grid-canvas.png);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Hello</h1>
+    <Canvas id="myCanvas" width="1000" height="800">Hello</Canvas>
+
+    <script>
+
+        const myCanvas = document.getElementById("myCanvas");
+        const ctx = myCanvas.getContext('2d');
+
+        const clearMyCanvas = () => {
+            ctx.clearRect(0,0,1000,800);
+        }
+
+        ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+        ctx.fillRect(100,100,300,180);
+
+        ctx.fillStyle = 'rgba(0, 0, 255, 0.5)';
+        ctx.fillRect(150,220,200,100);
+        // ctx.fillRect(x,y,width,height);
+
+
+        ctx.clearRect(50, 50, 150, 200);
+
+        ctx.strokeStyle = 'yellow' // Колір лінії
+        ctx.lineWidth = 3 //Товщина лінії
+        ctx.rect(50, 50, 100, 100); // Задаємо параментри прямокутника
+        ctx.stroke(); // Малюємо контур
+        ctx.fillStyle = 'lightBlue'; // Встановити колір заливки
+        ctx.fill(); //Заповнюємо контур
+
+
+        // Малюємо лінію
+        // ctx.moveTo(x, y); - Початкова точка
+        // ctx.lineTo(x, y); - Кінцева точка
+        
+        ctx.beginPath();
+        ctx.strokeStyle = 'black';
+
+        ctx.moveTo(50, 300); // Початкова точка
+        ctx.lineTo(70, 400); // Кінцева точка
+        ctx.stroke();
+        
+        ctx.beginPath(); // Відмальовє нову лінію
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 20;
+        ctx.moveTo(150,400);
+        ctx.lineTo(300, 550);
+        // ctx.lineCap = 'round'; // Округли кінці ліній
+        // ctx.lineCap = 'square'; // Робить кінець лінії квадратним
+        ctx.lineCap = 'butt'; // Робить кінець лінії квадратним
+        ctx.stroke();
+
+        clearMyCanvas();
+
+        ctx.beginPath();
+        ctx.strokeStyle = 'purple';
+        ctx.lineWidth = 5;
+        ctx.moveTo(40,500);
+        ctx.lineTo(400,60);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(400,60);
+        ctx.lineTo(300,300);
+        ctx.lineCap = 'round';
+        ctx.stroke();
+    </script>
+</body>
+</html>
