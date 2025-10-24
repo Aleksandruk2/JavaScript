@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Homework7</title>
+</head>
+<body id="body">
+    <div class="container">
+        <div class="row">
+            <div class="border p-0 shadow">
+                <table class="table" id="table">
+                    <thead id="categoriesTableHead">
+                        
+                    </thead>
+                    <tbody id="categoriesTableBody">
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const body = document.getElementById("body");
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET" ,"https://lohika.itstep.click/api/Categories/list",true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const categories = JSON.parse(xhr.response);
+                vievListCategories(categories);
+            }
+        };
+        xhr.send();
+
+        const vievListCategories = (listCategories) =>
+        {
+            const categoriesTableHead = document.getElementById("categoriesTableHead");
+            categoriesTableHead.innerHTML = `
+                <tr>
+                    <th scope="col" class="text-white bg-primary border-bottom border-dark">#</th>
+                    <th scope="col" class="text-white bg-primary border-bottom border-dark">Назва</th>
+                    <th scope="col" class="text-white bg-primary border-bottom border-dark">slug</th>
+                </tr>
+            `;
+            const categoriesTableBody = document.getElementById("categoriesTableBody");
+                categoriesTableBody.innerHTML = "";
+                listCategories.forEach((item, index) => {
+                    const tr = document.createElement("tr");
+                    
+                    tr.innerHTML = `
+                    <tr>
+                        <td class="text-center"> ${index + 1} </td>
+                        <td>${item.title}</td>
+                        <td class="item-hover">
+                            <span>${item.urlSlug}</span>
+                            <span class="float-end">
+                                <button id="btn-${index}"class="my-btn btn btn-danger">
+                                    Delete
+                                </button>
+                            </span>
+                        </td>
+                    </tr> `;
+                    categoriesTableBody.appendChild(tr); 
+                });
+                for (let index = 0; index < listCategories.length; index++) {
+                    document.getElementById(`btn-${index}`).addEventListener("click", () => {deleteCategoryById(index, listCategories)});
+                }
+        }
+
+        const deleteCategoryById = (id, listCategories) => {
+            console.log("Categories:", listCategories[id], "id:", id+1);
+
+            const info = document.createElement("div");
+            info.className = "position-fixed d-none end-0 bottom-0 mb-2";
+
+            const infoContent = document.createElement("div");
+            infoContent.className = "bg-danger rounded-start border border-2 border-dark p-1 text-white"
+
+            const infoTitle = document.createElement("h5");
+            infoTitle.textContent = listCategories[id].title;
+
+            const infoText = document.createElement("p");
+            infoText.className = "m-0";
+            infoText.innerHTML = `<span class="text-info">${listCategories[id].urlSlug}</span> було видалено.`;
+            
+            body.appendChild(info);
+            info.appendChild(infoContent);
+            infoContent.appendChild(infoTitle);
+            infoContent.appendChild(infoText);
+
+            info.classList.remove("d-none");
+            setTimeout(() => {
+                info.classList.add("d-none");
+            }, 4000);
+            
+            listCategories.splice(id,1);
+            vievListCategories(listCategories);
+
+            // Error 401
+            // xhr.open("DELETE",`https://lohika.itstep.click/api/Categories/delete/${listCategories[id].id}`,true);
+            // xhr.onload = function() {
+            //     if (xhr.status === 200) {
+            //         console.log("Видалено успішно:", xhr.responseText);
+            //         vievListCategories(listCategories);
+            //     } else {
+            //         console.error("Помилка видалення:", xhr.status, xhr.statusText);
+            //     }
+            // };
+            // xhr.send();
+        }
+    </script>
+</body>
+</html>
