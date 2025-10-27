@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework8</title>
+</head>
+<body class="bg-dark">
+    <div class="container">
+        <div class="form-floating mt-3 col-sm-8 col-6 mx-auto">
+            <input type="text" class="form-control bg-dark text-white" id="search" placeholder="Пошук">
+            <label class=" text-white" for="search">Пошук</label>
+        </div>
+
+        <div class="mt-3">
+             <div class="border p-0 shadow">
+                <table class="table m-0" id="table">
+                    <thead id="tableHead">
+                        <tr>
+                            <th scope="col" class="text-white bg-primary border-bottom border-dark">#</th>
+                            <th scope="col" class="text-white bg-primary border-bottom border-dark">Ім'я</th>
+                            <th scope="col" class="text-white bg-primary border-bottom border-dark">Фамілія</th>
+                            <th scope="col" class="text-white bg-primary border-bottom border-dark">Фото</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="node_modules/axios/dist/axios.min.js"></script>
+
+    <script>
+        const urlByFirstName = "'https://lohika.itstep.click/api/Users/search?FirstName=";
+        const urlImage = "https://lohika.itstep.click/images/800_";
+        const search = document.getElementById("search");
+        const tableBody = document.getElementById("tableBody");
+        const tableHead = document.getElementById("tableHead");
+
+        search.addEventListener("input", () => {
+            axios.get('https://lohika.itstep.click/api/Users/search', {
+                    params: { FirstName: search.value }
+                })
+                .then(response => {
+                    console.log(response);
+                    vievList(response.data);
+                 })
+                .catch(error => console.error('Помилка запиту:', error));
+            
+        });
+
+        const vievList = (list) =>
+        {
+            console.log(list.users);
+                tableBody.innerHTML = "";
+                list.users.forEach((item, index) => {
+                    const tr = document.createElement("tr");
+                    
+                    tr.innerHTML = `
+                    <tr>
+                        <td class="text-center text-white bg-dark"> ${index + 1} </td>
+                        <td class="text-white bg-dark">${item.firstName}</td>
+                        <td class="text-white bg-dark">${item.secondName}</td>
+                        <td class="text-white bg-dark">
+                            <img class="rounded" src="${urlImage}${item.photo}" width="50" alt="..."></img> 
+                        </td>
+                    </tr> `;
+                    tableBody.appendChild(tr); 
+                });
+        }
+        
+    </script>
+</body>
+</html>
